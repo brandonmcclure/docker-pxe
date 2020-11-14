@@ -1,5 +1,15 @@
+# [Environment]::SetEnvironmentVariable("PXE_SERVER_IP", "192.168.0.210", "Process")
 version: "3"
 services:
   dhcp:
-    build: ./dhcp
+    build: 
+      context: dhcp
+      dockerfile: Dockerfile
+      args: 
+      - "MY_PXE_SERVER_IP:${PXE_SERVER_IP}"
+      - "MY_DHCP_RANGE:192.168.0.201,192.168.0.230"
+      - "MY_GATEWAY_IP:192.168.0.1"
+      - "MY_DNS_SERVER_IP:192.168.0.1"
     network_mode: host
+  dnsmasq_exporter:
+      image: dnsmasq_exporter
